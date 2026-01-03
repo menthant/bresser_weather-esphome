@@ -50,9 +50,11 @@ namespace esphome
                     }
 
                     // Publish battery status
+                    // Note: In Home Assistant, device_class BATTERY uses inverted logic:
+                    // ON = Battery Low, OFF = Battery OK
                     if (this->battery_sensor_ != nullptr)
                     {
-                        this->battery_sensor_->publish_state(this->ws_.sensor[i].battery_ok);
+                        this->battery_sensor_->publish_state(!this->ws_.sensor[i].battery_ok);
                     }
 
                     // Publish temperature
@@ -102,7 +104,7 @@ namespace esphome
                         this->light_sensor_->publish_state(this->ws_.sensor[i].w.light_klx);
                     }
 
-                    ESP_LOGD(TAG, "Data published: Temp=%.1f°C, Hum=%d%%, Wind=%.1f/%.1f m/s @ %.0f°, Rain=%.1fmm, UV=%.1f, Light=%.1fklx, RSSI=%.1fdBm",
+                    ESP_LOGD(TAG, "Data published: Temp=%.1f°C, Hum=%d%%, Wind=%.1f/%.1f m/s @ %.0f°, Rain=%.1fmm, UV=%.1f, Light=%.1fklx, RSSI=%.1fdBm, Battery=%s",
                              this->ws_.sensor[i].w.temp_c,
                              this->ws_.sensor[i].w.humidity,
                              this->ws_.sensor[i].w.wind_avg_meter_sec,
@@ -111,7 +113,8 @@ namespace esphome
                              this->ws_.sensor[i].w.rain_mm,
                              this->ws_.sensor[i].w.uv,
                              this->ws_.sensor[i].w.light_klx,
-                             this->ws_.sensor[i].rssi);
+                             this->ws_.sensor[i].rssi,
+                             this->ws_.sensor[i].battery_ok ? "OK" : "Low");
                 }
             }
 
