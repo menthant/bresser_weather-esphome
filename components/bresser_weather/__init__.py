@@ -27,6 +27,7 @@ CONF_LIGHT = "light"
 CONF_RSSI = "rssi"
 CONF_BATTERY_OK = "battery_ok"
 CONF_SENSOR_ID = "sensor_id"
+CONF_FILTER_SENSOR_ID = "filter_sensor_id"
 
 # Custom units not in const
 UNIT_METER_PER_SECOND = "m/s"
@@ -92,6 +93,7 @@ CONFIG_SCHEMA = cv.Schema(
             device_class=DEVICE_CLASS_BATTERY,
         ),
         cv.Optional(CONF_SENSOR_ID): text_sensor.text_sensor_schema(),
+        cv.Optional(CONF_FILTER_SENSOR_ID): cv.hex_uint32_t,
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -143,6 +145,9 @@ async def to_code(config):
     if CONF_SENSOR_ID in config:
         sens = await text_sensor.new_text_sensor(config[CONF_SENSOR_ID])
         cg.add(var.set_sensor_id_text_sensor(sens))
+
+    if CONF_FILTER_SENSOR_ID in config:
+        cg.add(var.set_filter_sensor_id(config[CONF_FILTER_SENSOR_ID]))
 
     # Add library dependencies
     cg.add_platformio_option("lib_deps", ["matthias-bs/BresserWeatherSensorReceiver@0.37.0"])

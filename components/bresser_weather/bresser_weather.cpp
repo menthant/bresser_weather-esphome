@@ -28,6 +28,15 @@ namespace esphome
                 // Use first sensor slot
                 const int i = 0;
 
+                // Check if filter is enabled and if sensor ID matches
+                if (this->filter_enabled_ && this->ws_.sensor[i].sensor_id != this->filter_sensor_id_)
+                {
+                    ESP_LOGD(TAG, "Ignoring sensor ID %08X (filter: %08X)",
+                             (unsigned int)this->ws_.sensor[i].sensor_id,
+                             (unsigned int)this->filter_sensor_id_);
+                    return;
+                }
+
                 // Check if this is a weather sensor
                 if ((this->ws_.sensor[i].s_type == SENSOR_TYPE_WEATHER0) ||
                     (this->ws_.sensor[i].s_type == SENSOR_TYPE_WEATHER1) ||

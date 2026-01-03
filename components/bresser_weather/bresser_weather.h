@@ -37,9 +37,16 @@ namespace esphome
             void set_rssi_sensor(sensor::Sensor *sensor) { rssi_sensor_ = sensor; }
             void set_battery_sensor(binary_sensor::BinarySensor *sensor) { battery_sensor_ = sensor; }
             void set_sensor_id_text_sensor(text_sensor::TextSensor *sensor) { sensor_id_sensor_ = sensor; }
+            void set_filter_sensor_id(uint32_t filter_id)
+            {
+                filter_sensor_id_ = filter_id;
+                filter_enabled_ = true;
+            }
 
         protected:
             WeatherSensor ws_;
+            uint32_t filter_sensor_id_{0};
+            bool filter_enabled_{false};
 
             sensor::Sensor *temperature_sensor_{nullptr};
             sensor::Sensor *humidity_sensor_{nullptr};

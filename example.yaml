@@ -58,6 +58,7 @@ web_server:
 
 # Bresser Weather Sensor Component
 bresser_weather:
+  filter_sensor_id: 0x00001F11 # Only accept data from this sensor ID
   temperature:
     name: "Temperature"
   humidity:

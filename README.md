@@ -116,6 +116,7 @@ ota:
 
 # Bresser Weather Component
 bresser_weather:
+  filter_sensor_id: 0x00001F11 # Only accept data from this sensor ID
   temperature:
     name: "${friendly_name} Temperature"
   humidity:
@@ -194,6 +195,22 @@ pip install -r requirements.txt
 ```
 
 Then use [local_development.yaml](local_development.yaml) as your configuration file.
+
+#### ESPHome Commands for local development
+
+```bash
+# Validate config
+esphome config bresser_weather.yaml
+
+# Compile (without uploading)
+esphome compile bresser_weather.yaml
+
+# Upload to ESP8266 (finds USB port automatically)
+esphome upload bresser_weather.yaml
+
+# Or upload + monitor logs
+esphome run bresser_weather.yaml
+```
 
 ### Memory issues
 
